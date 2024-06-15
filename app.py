@@ -5,7 +5,6 @@ app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
-import mysql.connector
 import json
 from collections import OrderedDict
 import jwt
@@ -39,7 +38,7 @@ def attractions():
     try:
         con = pymysql.connect(
             host=os.getenv("host"),
-            port=os.getenv("port"),
+            port=int(os.getenv("port")),
             user=os.getenv("user"),
             password=os.getenv("password"),
             database=os.getenv("database")
@@ -117,7 +116,7 @@ def get_attraction(attractionId):
     try:
         con = pymysql.connect(
             host=os.getenv("host"),
-            port=os.getenv("port"),
+            port=int(os.getenv("port")),
             user=os.getenv("user"),
             password=os.getenv("password"),
             database=os.getenv("database")
@@ -174,7 +173,7 @@ def mrts():
     try:    
         con = pymysql.connect(
             host=os.getenv("host"),
-            port=os.getenv("port"),
+            port=int(os.getenv("port")),
             user=os.getenv("user"),
             password=os.getenv("password"),
             database=os.getenv("database")
@@ -208,7 +207,7 @@ def mrts():
 def signup():
     con = pymysql.connect(
             host=os.getenv("host"),
-            port=os.getenv("port"),
+            port=int(os.getenv("port")),
             user=os.getenv("user"),
             password=os.getenv("password"),
             database=os.getenv("database")
@@ -244,7 +243,7 @@ def signin():
     try:
         con = pymysql.connect(
             host=os.getenv("host"),
-            port=os.getenv("port"),
+            port=int(os.getenv("port")),
             user=os.getenv("user"),
             password=os.getenv("password"),
             database=os.getenv("database")
@@ -313,7 +312,7 @@ def user_auth(current_user):
 def get_trip():
     con = pymysql.connect(
         host=os.getenv("host"),
-        port=os.getenv("port"),
+            port=int(os.getenv("port")),
         user=os.getenv("user"),
         password=os.getenv("password"),
         database=os.getenv("database")
@@ -383,7 +382,7 @@ def get_trip():
 def update_trip():
     con = pymysql.connect(
             host=os.getenv("host"),
-            port=os.getenv("port"),
+            port=int(os.getenv("port")),
             user=os.getenv("user"),
             password=os.getenv("password"),
             database=os.getenv("database")
@@ -446,7 +445,7 @@ def update_trip():
 def delete_trip():
     con = pymysql.connect(
             host=os.getenv("host"),
-            port=os.getenv("port"),
+            port=int(os.getenv("port")),
             user=os.getenv("user"),
             password=os.getenv("password"),
             database=os.getenv("database")
@@ -488,7 +487,7 @@ def delete_trip():
 def order_trip():
     con = pymysql.connect(
             host=os.getenv("host"),
-            port=os.getenv("port"),
+            port=int(os.getenv("port")),
             user=os.getenv("user"),
             password=os.getenv("password"),
             database=os.getenv("database")
@@ -571,7 +570,7 @@ def order_trip():
 def show_trip(orderNumber):
     con = pymysql.connect(
             host=os.getenv("host"),
-            port=os.getenv("port"),
+            port=int(os.getenv("port")),
             user=os.getenv("user"),
             password=os.getenv("password"),
             database=os.getenv("database")
@@ -632,4 +631,4 @@ def show_trip(orderNumber):
     return jsonify({"error": "未提供有效的Token"})
 
 
-app.run(host="0.0.0.0", port=3000)
+app.run(host="0.0.0.0", port=5000)
