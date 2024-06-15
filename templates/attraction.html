@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <title>台北一日遊</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/attraction-layout.css') }}">
+        <script src="{{ url_for('static', filename= 'javaScript/attraction.js')}}"></script>
+    </head>
+    <body>
+        <header >
+            <nav class="header">
+                <ul class='nav_bar'>
+                    <li class='logo' onclick="returnIndex();">台北一日遊</li>
+                    <span class="menu">
+                        <li id="booking-link"><a onclick="bookingButton()" >預定行程</a></li>
+                        <li id="login-link"><a onclick="loginBlock()">登入/註冊</a></li>
+                        <li id="logout-link"><a onclick="logoutBlock()">登出系統</a></li>
+                    </span>
+                </ul>
+            </nav>
+            <div class="login-class"></div>
+            <div class="login-form">
+                <form action="/api/user/auth" method="PUT" id="signinForm">
+                    <img src="/static/images/close.png" class="close-button" onclick="closeLoginForm()">
+                    <div class="registration-top"></div>
+                    <div style="display: flex; justify-content: center; font-size: 24px; font-weight: bold; margin: 10px; color: rgba(102, 102, 102, 1);" >
+                        登入會員帳號</div>
+                    <input type="text" placeholder="輸入電子信箱" class="text-input" id="signinEmail" name="signinEmail">
+                    <input type="password" placeholder="輸入密碼" class="text-input" id="signinPassword" name="signinPassword">
+                    <button class="login-button-text" onclick= submitSigninForm(event)>登入帳號</button>
+                    <div class="signin-message-box"></div>
+                    <div class="create-text" onclick="switchToRegist()">還沒有帳戶？點此註冊</div>
+                </form>
+            </div>
+            <div class="registration-form">
+                <form action="/api/user" method="POST" id="signupForm" >
+                    <img src="/static/images/close.png" class="close-button" onclick="closeRegistForm()">
+                    <div class="registration-top"></div>
+                    <div style="display: flex; justify-content: center; font-size: 24px; font-weight: bold; margin: 10px; color: rgba(102, 102, 102, 1);" >
+                        註冊會員帳號</div>
+                    <input type="text" placeholder="輸入姓名" class="text-input" id="signupName" name="signupName">
+                    <input type="text" placeholder="輸入電子信箱" class="text-input" id="signupEmail" name="signupEmail">
+                    <input type="password" placeholder="輸入密碼" class="text-input" id="signupPassword" name="signupPassword">
+                    <button class="login-button-text" onclick= submitSignupForm(event)>註冊新帳號</button>
+                    <div class="message-box"></div>
+                    <div class="create-text" onclick="switchToLogin()">已經有帳戶了？點此登入</div>
+                </form>
+            </div>
+        </header>
+        <div class="info-flex">
+            <section>
+                <div class="img-box" id="imageGallery" src="">
+                    <div class="image-gallery-circle" id="dotContainer"></div>
+                    <img id="leftArrow" class="left-arrow" src="{{ url_for('static', filename='images/arrowLeftStatesHovered.png') }}" onclick="leftArrow();">
+                    <img id="rightArrow" class="right-arrow" src="{{ url_for('static', filename='images/arrowRightStatesHovered.png') }}" onclick="rightArrow();">
+                </div>
+                <div class="schedule-box">
+                    <div class="attraction-title"></div>
+                    <div class="attraction-category-mrt"></div>
+                    <div class="booking-section">
+                        <div class="booking-title-text-bottom15">訂購導覽行程</div>
+                        <div class="booking-content-text-bottom15">以此景點為中心的一日行程，帶您探索城市角落故事</div>
+                        <div style="display: flex; align-items: center;" class="margin-bottom-15px">
+                            <div class="booking-title-text">選擇日期：</div>
+                                <input type="date" class="date" id="dateInput">
+                        </div>
+                        <div style="display: flex; align-items: center;" class="margin-bottom-15px">
+                            <div class="booking-title-text">選擇時間：</div>
+                            <div id= checkLeft class="check-flex" onclick="check_left()">
+                                <img id="leftIconUnfilled" src="{{ url_for('static', filename='images/click.png') }}" class="unfilled-icon">
+                                <img id="leftIconFilled" src="{{ url_for('static', filename='images/click-filled.png') }}" class="filled-icon">
+                                <div class="font-size-16px text-med" style="margin-left: 5px;">上半天</div>
+                            </div>
+                            <div id = checkRight class="check-flex" onclick="check_right()" style="margin-left: 15px;">
+                                <img id="rightIconUnfilled" src="{{ url_for('static', filename='images/click.png') }}" class="unfilled-icon">
+                                <img id="rightIconFilled" src="{{ url_for('static', filename='images/click-filled.png') }}" class="filled-icon">
+                                <div class="font-size-16px text-med" style="margin-left: 5px;">下半天</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                            <div class="booking-title-text">導覽費用：</div>
+                            <div id="tourCost" class="booking-content-text">請選擇行程</div>
+                        </div>                        
+                        <div class="schedule-button" onclick="bookTrip()">開始預約行程</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+            <div style="display: flex; justify-content: center;">
+                <hr style="width: 1200px; opacity: 0.3; margin: 40px 0;">
+            </div>
+        </div>
+        <div class="info-flex">
+            <div style="width: 100%; max-width: 1200px;">
+                <div class="info-intro"></div>
+                <div class="info-address-title">景點地址:</div>
+                <div class="info-address"></div>
+                <div class="info-traffic-title">交通方式：</div>
+                <div class="info-traffic"></div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-text">COPYRIGHT &copy; 2021 台北一日遊</div>
+        </footer>
+    </body>
+</html>
