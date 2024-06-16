@@ -54,6 +54,7 @@ function fetchMrts() {
           fetch(`/api/attractions?keyword=${keyword}&page=${nextPage}`)
             .then((response) => response.json())
             .then((data) => {
+              console.log(data)
               if (data.data && data.data.length > 0) {
                 data.data.forEach((attraction) => {
                   appendDataToPage(attraction);
@@ -201,7 +202,7 @@ function fetchMrts() {
     if (signupNameInput.value === "" || signupEmailInput.value === "" || signupPasswordInput.value === "") {
         const messageBox = document.querySelector(".message-box");
         messageBox.style.display = "block";
-        messageBox.textContent = "註冊失敗，有些欄位還沒填寫喔！";
+        messageBox.textContent = "Missing some field";
     } else {
         fetch("/api/user", {
             method: "POST",
@@ -236,7 +237,7 @@ function fetchMrts() {
     if (signinEmailInput.value === "" || signinPasswordInput.value === "") {
         const signinMessageBox = document.querySelector(".signin-message-box");
         signinMessageBox.style.display = "block";
-        signinMessageBox.textContent = "登入失敗，有些欄位還沒填寫喔！";
+        signinMessageBox.textContent = "Missing some field";
     } else {
         fetch("/api/user/auth", {
             method: "PUT",

@@ -97,7 +97,7 @@ fetchAttractionData(attractionId);
 function check_left() {
   price = 2000;
   leftClicked = true;
-  document.getElementById("tourCost").textContent = "新台幣 2000 元";
+  document.getElementById("tourCost").textContent = "NTD 2000 ";
   document.getElementById("leftIconUnfilled").style.display = "none";
   document.getElementById("leftIconFilled").style.display = "block";
   
@@ -108,7 +108,7 @@ function check_left() {
 function check_right() {
   price = 2500;
   rightClicked = true;
-  document.getElementById("tourCost").textContent = "新台幣 2500 元";
+  document.getElementById("tourCost").textContent = "NTD 2500 ";
   document.getElementById("rightIconUnfilled").style.display = "none";
   document.getElementById("rightIconFilled").style.display = "block";
   
@@ -172,7 +172,7 @@ function submitSignupForm(signupEvent) {
   if (signupNameInput.value === "" || signupEmailInput.value === "" || signupPasswordInput.value === "") {
       const messageBox = document.querySelector(".message-box");
       messageBox.style.display = "block";
-      messageBox.textContent = "註冊失敗，有些欄位還沒填寫喔！";
+      messageBox.textContent = "Missing some field";
   } else {
       fetch("/api/user", {
           method: "POST",
@@ -207,7 +207,7 @@ function submitSigninForm(signinEvent) {
   if (signinEmailInput.value === "" || signinPasswordInput.value === "") {
       const signinMessageBox = document.querySelector(".signin-message-box");
       signinMessageBox.style.display = "block";
-      signinMessageBox.textContent = "登入失敗，有些欄位還沒填寫喔！";
+      signinMessageBox.textContent = "Missing some field";
   } else {
       fetch("/api/user/auth", {
           method: "PUT",
@@ -297,10 +297,10 @@ function bookTrip() {
     loginBlock();
   }
   else if (date === "" ) {
-    alert("是不是忘了選取日期或時間啊！！！")
+    alert("Missing some field")
   }
   else if (!leftClicked && !rightClicked){
-    alert("是不是忘了選取日期或時間啊！！！")
+    alert("Missing some field")
   }
   else {
   fetch("/api/booking", {

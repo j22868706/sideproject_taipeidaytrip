@@ -49,7 +49,7 @@ function loginBlock() {
     if (signupNameInput.value === "" || signupEmailInput.value === "" || signupPasswordInput.value === "") {
         const messageBox = document.querySelector(".message-box");
         messageBox.style.display = "block";
-        messageBox.textContent = "註冊失敗，有些欄位還沒填寫喔！";
+        messageBox.textContent = "Missing some field";
       } else {
           fetch("/api/user", {
             method: "POST",
@@ -84,7 +84,7 @@ function submitSigninForm(signinEvent) {
       if (signinEmailInput.value === "" || signinPasswordInput.value === "") {
         const signinMessageBox = document.querySelector(".signin-message-box");
         signinMessageBox.style.display = "block";
-        signinMessageBox.textContent = "登入失敗，有些欄位還沒填寫喔！";
+        signinMessageBox.textContent = "Missing some field";
     } else {
         fetch("/api/user/auth", {
             method: "PUT",

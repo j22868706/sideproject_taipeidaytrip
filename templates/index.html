@@ -3,7 +3,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta charset="utf-8" />
-        <title>台北一日遊</title>
+        <title>Taipei Day Trip</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index-layout.css') }}">
         <script src="{{ url_for('static', filename= 'javaScript/index.js')}}"></script>
     </head>
@@ -14,12 +14,12 @@
                 <img src="/static/images/close.png" class="close-button" onclick="closeLoginForm()">
                 <div class="registration-top"></div>
                 <div style="display: flex; justify-content: center; font-size: 24px; font-weight: bold; margin: 10px; color: rgba(102, 102, 102, 1);" >
-                    登入會員帳號</div>
-                <input type="text" placeholder="輸入電子信箱" class="text-input" id="signinEmail" name="signinEmail">
-                <input type="password" placeholder="輸入密碼" class="text-input" id="signinPassword" name="signinPassword">
-                <button class="login-button-text" onclick= submitSigninForm(event)>登入帳號</button>
+                    Log in</div>
+                <input type="text" placeholder="Email" class="text-input" id="signinEmail" name="signinEmail">
+                <input type="password" placeholder="Password" class="text-input" id="signinPassword" name="signinPassword">
+                <button class="login-button-text" onclick= submitSigninForm(event)>Login</button>
                 <div class="signin-message-box"></div>
-                <div class="create-text" onclick="switchToRegist()">還沒有帳戶？點此註冊</div>
+                <div class="create-text" onclick="switchToRegist()">Don't have an account? Sign up</div>
             </form>
         </div>
         <div class="registration-form">
@@ -27,33 +27,33 @@
                 <img src="/static/images/close.png" class="close-button" onclick="closeRegistForm()">
                 <div class="registration-top"></div>
                 <div style="display: flex; justify-content: center; font-size: 24px; font-weight: bold; margin: 10px; color: rgba(102, 102, 102, 1);" >
-                    註冊會員帳號</div>
-                <input type="text" placeholder="輸入姓名" class="text-input" id="signupName" name="signupName">
-                <input type="text" placeholder="輸入電子信箱" class="text-input" id="signupEmail" name="signupEmail">
-                <input type="password" placeholder="輸入密碼" class="text-input" id="signupPassword" name="signupPassword">
-                <button class="login-button-text" onclick= submitSignupForm(event)>註冊新帳號</button>
+                    Sign up</div>
+                <input type="text" placeholder="Name" class="text-input" id="signupName" name="signupName">
+                <input type="text" placeholder="Email" class="text-input" id="signupEmail" name="signupEmail">
+                <input type="password" placeholder="Password" class="text-input" id="signupPassword" name="signupPassword">
+                <button class="login-button-text" onclick= submitSignupForm(event)>Sign up</button>
                 <div class="message-box"></div>
-                <div class="create-text" onclick="switchToLogin()">已經有帳戶了？點此登入</div>
+                <div class="create-text" onclick="switchToLogin()">Have an account? Log in</div>
             </form>
         </div>
         <header class="header">
         <nav>
             <ul class='nav_bar'>
-                <li class='logo' onclick="returnIndex()";>台北一日遊</li>
+                <li class='logo' onclick="returnIndex();">Taipei Daytrip</li>
                 <span class="menu">
-                    <li id="booking-link"><a onclick="bookingButton()" >預定行程</a></li>
-                    <li id="login-link"><a onclick="loginBlock()">登入/註冊</a></li>
-                    <li id="logout-link"><a onclick="logoutBlock()">登出系統</a></li>
+                    <li id="booking-link"><a onclick="bookingButton()" >Booking</a></li>
+                    <li id="login-link"><a onclick="loginBlock()">Log in/ Sign up</a></li>
+                    <li id="logout-link"><a onclick="logoutBlock()">Log out</a></li>
                 </span>
             </ul>
         </nav>
         </header>
             <div class="searchBackground" style= "background-image: url('{{ url_for('static', filename='images/welcome.png') }}');">
                 <div class="searchContent" >
-                    <div class="searchBarTitle">輕鬆享受台北一日悠閒</div>
-                    <div class="searchBarText">探索每個角落，體驗城市的深度旅遊行程</div>
+                    <div class="searchBarTitle">Enjoy a Relaxing Day in Taipei</div>
+                    <div class="searchBarText">Exploring, Experiencing | In Depth City Tour</div>
                     <div class="searchContainer">
-                        <input class="searchSpace" type="text" placeholder="輸入景點名稱查詢" id="search-input">
+                        <input class="searchSpace" type="text" placeholder="Attraction" id="search-input">
                         <button class="searchButton" id="search-button" onclick="searched();"><img src="{{ url_for('static', filename= 'images/icon_search.png')}}"></button>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
             </div>
         </main static="margin-top: 40px;">
         <footer class="footer">
-            <div class="footer_text">COPYRIGHT &copy; 2021 台北一日遊</div>
+            <div class="footer_text">COPYRIGHT &copy; 2021 Taipei Day Trip</div>
         </footer>
     </body>
 </html>

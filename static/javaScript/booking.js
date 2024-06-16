@@ -49,7 +49,7 @@ function loginBlock() {
     if (signupNameInput.value === "" || signupEmailInput.value === "" || signupPasswordInput.value === "") {
         const messageBox = document.querySelector(".message-box");
         messageBox.style.display = "block";
-        messageBox.textContent = "註冊失敗，有些欄位還沒填寫喔！";
+        messageBox.textContent = "Missing some field";
       } else {
           fetch("/api/user", {
             method: "POST",
@@ -84,7 +84,7 @@ function loginBlock() {
       if (signinEmailInput.value === "" || signinPasswordInput.value === "") {
         const signinMessageBox = document.querySelector(".signin-message-box");
         signinMessageBox.style.display = "block";
-        signinMessageBox.textContent = "登入失敗，有些欄位還沒填寫喔！";
+        signinMessageBox.textContent = "Missing some field";
     } else {
         fetch("/api/user/auth", {
             method: "PUT",
@@ -330,7 +330,7 @@ function loginBlock() {
     contactNameInputValue = contactNameInput.value;
     if (contactNameInputValue === "") {
       bookingIsValidName = false;
-      alert("姓名不能空白唷！！！"); 
+      alert("Missing some field"); 
     } else {
       bookingIsValidName = true;
     }
@@ -341,7 +341,7 @@ function loginBlock() {
     contactEmailInputValue = contactEmailInput.value;
     if (contactEmailInputValue === "") {
       bookingIsValidEmail = false;
-      alert("電子信箱忘記填了唷！！！"); 
+      alert("Missing some field"); 
     } else {
       bookingIsValidEmail = true;
     }
@@ -352,7 +352,7 @@ function loginBlock() {
     contactPhoneInputValue = contactPhoneInput.value;
     if (contactPhoneInputValue === "") {
       bookingIsValidPhone = false;
-      alert("手機號碼不可以空白唷！！！"); 
+      alert("Missing some field"); 
     } else {
       bookingIsValidPhone = true;
     }

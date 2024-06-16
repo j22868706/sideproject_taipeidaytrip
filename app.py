@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-from flask import *
+from flask import Flask, jsonify, request, render_template
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
@@ -14,6 +13,7 @@ import requests
 from dotenv import load_dotenv
 import os
 import pymysql
+
 app.debug = True
 
 load_dotenv()
@@ -98,17 +98,15 @@ def attractions():
             attraction["images"] = [img[0] for img in img_data]
 
             response_data["data"].append(attraction)
-
         con.close()
-
-        return json.dumps(response_data, ensure_ascii=False).encode('utf8')
+        return jsonify(response_data)
 
     except Exception as e:
         error_response = {
             "error": True,
             "message": "請按照情境提供對應的錯誤訊息"
         }
-        return json.dumps(error_response, ensure_ascii=False).encode('utf8'), 500 
+        return jsonify({error_response}), 500
 
 
 @app.route("/api/attraction/<int:attractionId>")
@@ -159,14 +157,14 @@ def get_attraction(attractionId):
 
         con.close()
 
-        return json.dumps(attraction_id_response, ensure_ascii=False).encode('utf8')
+        return jsonify(attraction_id_response)
 
     except Exception as e:
         error_response = {
             "error": True,
             "message": "請按照情境提供對應的錯誤訊息"
         }
-        return json.dumps(error_response, ensure_ascii=False).encode('utf8'), 500  
+        return jsonify(error_response), 500  
 
 @app.route("/api/mrts")
 def mrts():
@@ -193,16 +191,16 @@ def mrts():
         cursor.close()
         con.close() 
 
-        return json.dumps(mrts_response_data, ensure_ascii=False).encode('utf8')
-    
+        return jsonify(mrts_response_data)
+      
     except Exception as e:
         mrt_error_response = {
             "error": True,
             "message": "請按照情境提供對應的錯誤訊息"
         }
         print("Error:", e)
-        return json.dumps(mrt_error_response, ensure_ascii=False).encode('utf8'), 500 
-
+        return jsonify(mrt_error_response), 500 
+    
 @app.route('/api/user', methods=["POST"])
 def signup():
     con = pymysql.connect(

@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
-    <title>台北一日遊</title>
+    <title>Taipei Day Trip</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/thankyou-layout.css') }}">
     <script src="{{ url_for('static', filename= 'javaScript/thankyou.js')}}"></script>
 </head>
@@ -11,40 +11,40 @@
     <header class="header">
         <nav>
             <ul class='nav_bar'>
-                <li class='logo' onclick="returnIndex()";>台北一日遊</li>
+                <li class='logo' onclick="returnIndex();">Taipei Daytrip</li>
                 <span class="menu">
-                        <li id="booking-link"><a onclick="bookingButton()" >預定行程</a></li>
-            <li id="login-link"><a onclick="loginBlock()">登入/註冊</a></li>
-                        <li id="logout-link"><a onclick="logoutBlock()">登出系統</a></li>
-                    </span>
-                </ul>
+                    <li id="booking-link"><a onclick="bookingButton()" >Booking</a></li>
+                    <li id="login-link"><a onclick="loginBlock()">Log in/ Sign up</a></li>
+                    <li id="logout-link"><a onclick="logoutBlock()">Log out</a></li>
+                </span>
+            </ul>
         </nav>
         <div class="login-class"></div>
             <div class="login-form">
-            <form action="/api/user/auth" method="PUT" id="signinForm">
-                <img src="/static/images/close.png" class="close-button" onclick="closeLoginForm()">
-                <div class="registration-top"></div>
-                <div style="display: flex; justify-content: center; font-size: 24px; font-weight: bold; margin: 10px; color: rgba(102, 102, 102, 1);" >
-                登入會員帳號</div>
-                <input type="text" placeholder="輸入電子信箱" class="text-input" id="signinEmail" name="signinEmail">
-                <input type="password" placeholder="輸入密碼" class="text-input" id="signinPassword" name="signinPassword">
-                <button class="login-button-text" onclick= submitSigninForm(event)>登入帳號</button>
-                <div class="signin-message-box"></div>
-                <div class="create-text" onclick="switchToRegist()">還沒有帳戶？點此註冊</div>
-            </form>
+                <form action="/api/user/auth" method="PUT" id="signinForm">
+                    <img src="/static/images/close.png" class="close-button" onclick="closeLoginForm()">
+                    <div class="registration-top"></div>
+                    <div style="display: flex; justify-content: center; font-size: 24px; font-weight: bold; margin: 10px; color: rgba(102, 102, 102, 1);" >
+                        Log in</div>
+                    <input type="text" placeholder="Email" class="text-input" id="signinEmail" name="signinEmail">
+                    <input type="password" placeholder="Password" class="text-input" id="signinPassword" name="signinPassword">
+                    <button class="login-button-text" onclick= submitSigninForm(event)>Login</button>
+                    <div class="signin-message-box"></div>
+                    <div class="create-text" onclick="switchToRegist()">Don't have an account? Sign up</div>
+                </form>
         </div>
         <div class="registration-form">
             <form action="/api/user" method="POST" id="signupForm" >
                 <img src="/static/images/close.png" class="close-button" onclick="closeRegistForm()">
                 <div class="registration-top"></div>
                 <div style="display: flex; justify-content: center; font-size: 24px; font-weight: bold; margin: 10px; color: rgba(102, 102, 102, 1);" >
-                註冊會員帳號</div>
-                <input type="text" placeholder="輸入姓名" class="text-input" id="signupName" name="signupName">
-                <input type="text" placeholder="輸入電子信箱" class="text-input" id="signupEmail" name="signupEmail">
-                <input type="password" placeholder="輸入密碼" class="text-input" id="signupPassword" name="signupPassword">
-                <button class="login-button-text" onclick= submitSignupForm(event)>註冊新帳號</button>
+                    Sign up</div>
+                <input type="text" placeholder="Name" class="text-input" id="signupName" name="signupName">
+                <input type="text" placeholder="Email" class="text-input" id="signupEmail" name="signupEmail">
+                <input type="password" placeholder="Password" class="text-input" id="signupPassword" name="signupPassword">
+                <button class="login-button-text" onclick= submitSignupForm(event)>Sign up</button>
                 <div class="message-box"></div>
-                <div class="create-text" onclick="switchToLogin()">已經有帳戶了？點此登入</div>
+                <div class="create-text" onclick="switchToLogin()">Have an account? Log in</div>
             </form>
         </div>
         </header>
@@ -52,20 +52,20 @@
             <div class="main-info" style="overflow-x: hidden; margin-bottom: 104px;">
                 <div style="width: 100%; max-width: 1200px; display:flex; align-items: center; flex-direction: column;">
                     <div class="display-flex" style="max-width: 1000px; margin-bottom: 30px;">
-                        <div class="text-title">您好，<span id="usernamePlaceholder"></span> 訂購成功！！！</div>
+                        <div class="text-title">Hello,<span id="usernamePlaceholder"></span> Thank you for your purchase！！！</div>
                         <div class="section" id = "section">
                             <img class="img" id="img" alt="img">
                             <div class="trip-info">
-                                <div class="title0" style="margin-top: 20px;">以下為您的訂單資訊：</div>
-                                <div class="attractionName0" style="margin-top: 20px;">台北一日遊：<span class="section-text" id="attractionTitle"></span></div>
-                                <div class="number0" >訂單編號：<span class="section-text" id="ordernumber"></span></div>
-                                <div class="name0" >旅客姓名：<span class="section-text" id="touristName"></span></div>
-                                <div class="email0" >電子信箱：<span class="section-text" id="touristEmail"></span></div>
-                                <div class="phone0" >聯絡電話：<span class="section-text" id="touristPhone"></span></div>
-                                <div class="date0" >日期：<span class="section-text" id="attractionDate"></span></div>
-                                <div class="time0">時間：<span class="section-text" id="attractionTime"></span></div>
-                                <div class="price0">價格：<span class="section-text">新台幣</span><span class="section-text" id="attractiondPrice"></span><span class="section-text">元</span></div>
-                                <div class="address">地點：<span class="section-text" id="attractiondAddress"></span></div>
+                                <div class="title0" style="margin-top: 20px;">Here is the detail information：</div>
+                                <div class="attractionName0" style="margin-top: 20px;">Taipei Day Trip:<span class="section-text" id="attractionTitle"></span></div>
+                                <div class="number0" >Confirm Number：<span class="section-text" id="ordernumber"></span></div>
+                                <div class="name0" >Name:<span class="section-text" id="touristName"></span></div>
+                                <div class="email0" >Email:<span class="section-text" id="touristEmail"></span></div>
+                                <div class="phone0" >Phone Number:<span class="section-text" id="touristPhone"></span></div>
+                                <div class="date0" >Date:<span class="section-text" id="attractionDate"></span></div>
+                                <div class="time0">Time:<span class="section-text" id="attractionTime"></span></div>
+                                <div class="price0">Tuition:<span class="section-text">NTD</span><span class="section-text" id="attractiondPrice"></span><span class="section-text"></span></div>
+                                <div class="address">Address:<span class="section-text" id="attractiondAddress"></span></div>
                             </div>
                         </div>
                     </div>     
@@ -73,7 +73,7 @@
             </div>
         </main>
         <footer class="footer">
-        <div class="footer_text">COPYRIGHT &copy; 2021 台北一日遊</div>
+        <div class="footer_text">COPYRIGHT &copy; 2021 Taipei Day Trip</div>
         </footer>
 </body>
 </html>
