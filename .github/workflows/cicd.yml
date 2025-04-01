@@ -41,14 +41,16 @@ jobs:
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Check if container exists before stopping and removing it to avoid errors on first deployment
-            sudo docker pull j22868706/taipeidaytrip_app:latest
+            # Pull the latest image
+            sudo docker pull j22868706/taipeidaytrip_app:latest || { echo "Failed to pull image"; exit 1; }
+
+            # Stop and remove existing container if it exists
             if [ "$(sudo docker ps -q -f name=app)" ]; then
-              sudo docker stop app
-              sudo docker rm app
+              sudo docker stop app || { echo "Failed to stop container"; exit 1; }
+              sudo docker rm app || { echo "Failed to remove container"; exit 1; }
             fi
 
-            # Run container with more complete configuration
+            # Run container with environment variables matching app.py expectations
             sudo docker run -d \
               --name app \
               --restart unless-stopped \
@@ -59,7 +61,19 @@ jobs:
               -e user="${{ secrets.DB_USER }}" \
               -e password="${{ secrets.DB_PASSWORD }}" \
               -e database="${{ secrets.DB_NAME }}" \
-              j22868706/taipeidaytrip_app:latest
+              j22868706/taipeidaytrip_app:latest || { echo "Failed to run container"; exit 1; }
 
-            # Verify the container is running
-            sudo docker ps | grep app
+            # Wait briefly and verify container is running
+            sleep 5
+            if [ "$(sudo docker ps -q -f name=app)" ]; then
+              echo "Container is running:"
+              sudo docker ps | grep app
+            else
+              echo "Container failed to start, checking logs:"
+              sudo docker logs app
+              exit 1
+            fi
+
+            # Check initial logs for startup errors
+            echo "Initial container logs:"
+            sudo docker logs app

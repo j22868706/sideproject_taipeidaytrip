@@ -12,7 +12,8 @@ import requests
 from dotenv import load_dotenv
 
 # 設置日誌
-logging.basicConfig(level=logging.INFO)
+gunicorn_logger = logging.getLogger('gunicorn.error')
+logging.basicConfig(level=logging.INFO, handlers=gunicorn_logger.handlers)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
@@ -628,3 +629,6 @@ def show_trip(orderNumber):
     except Exception as e:
         logger.error(f"伺服器錯誤: {e}")
         return jsonify({"error": True, "message": "伺服器內部錯誤"}), 500
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=3000)
