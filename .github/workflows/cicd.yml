@@ -54,8 +54,8 @@ jobs:
               --restart unless-stopped \
               -p 80:80 \
               -p 3000:3000 \
-              -e host="${{ secrets.DB_HOST }}" \
-              -e port="${{ secrets.DB_PORT }}" \
+              -e host="taipeidaytripdb.codcq6aa85vr.us-east-1.rds.amazonaws.com" \
+              -e port="3306" \
               -e user="${{ secrets.DB_USER }}" \
               -e password="${{ secrets.DB_PASSWORD }}" \
               -e database="${{ secrets.DB_NAME }}" \
