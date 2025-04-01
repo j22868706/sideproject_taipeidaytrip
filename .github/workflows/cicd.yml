@@ -37,7 +37,6 @@ jobs:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
-          key_format: base64
           host: ${{ secrets.HOST_DNS }}
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
