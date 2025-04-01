@@ -48,18 +48,39 @@ jobs:
               sudo docker rm app
             fi
 
-            # Run container with more complete configuration
+            # 創建一個更新的 start.sh 文件，解決網絡延遲問題
+            cat > start-updated.sh << 'EOF'
+            #!/bin/bash
+
+            # 等待數據庫連接
+            echo "等待數據庫連接..."
+            sleep 10
+
+            # Start Gunicorn in daemon mode with increased timeout settings
+            gunicorn -D -w 1 --worker-class eventlet --timeout 120 --access-logfile gunicorn_access.log --error-logfile gunicorn_error.log -b 0.0.0.0:3000 app:app
+
+            # Start Nginx in foreground mode
+            nginx -g 'daemon off;'
+            EOF
+
+            # 使其可執行
+            chmod +x start-updated.sh
+
+            # Run container with more complete configuration and host networking
             sudo docker run -d \
               --name app \
               --restart unless-stopped \
-              -p 80:80 \
-              -p 3000:3000 \
+              --network host \
               -e host="taipeidaytripdb.codcq6aa85vr.us-east-1.rds.amazonaws.com" \
               -e port="3306" \
               -e user="${{ secrets.DB_USER }}" \
               -e password="${{ secrets.DB_PASSWORD }}" \
               -e database="${{ secrets.DB_NAME }}" \
-              j22868706/taipeidaytrip_app:latest
+              -v $(pwd)/start-updated.sh:/start-updated.sh \
+              j22868706/taipeidaytrip_app:latest /start-updated.sh
+
+            sleep 5
+            sudo docker logs app
 
             # Verify the container is running
             sudo docker ps | grep app
