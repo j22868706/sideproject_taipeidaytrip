@@ -41,7 +41,7 @@ def attractions():
             port=int(os.getenv("port")),
             user=os.getenv("user"),
             password=os.getenv("password"),
-            database=os.getenv("database")
+            database=os.getenv("database"),
             connect_timeout=60 
         )
 
