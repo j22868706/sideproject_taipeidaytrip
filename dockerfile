@@ -27,7 +27,7 @@ RUN pip install --upgrade pip && \
 COPY ./app /app/
 
 # Ensure directory structure exists
-RUN mkdir -p /app/templates /app/static/css /app/static/javaScript
+RUN mkdir -p /app/templates /app/static/css /app/static/javaScript /app/static/images
 
 # Set up startup script
 COPY start.sh /
