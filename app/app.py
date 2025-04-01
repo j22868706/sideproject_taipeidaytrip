@@ -42,6 +42,7 @@ def attractions():
             user=os.getenv("user"),
             password=os.getenv("password"),
             database=os.getenv("database")
+            connect_timeout=60 
         )
 
         cursor = con.cursor()
