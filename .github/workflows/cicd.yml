@@ -12,15 +12,6 @@ jobs:
       - name: Checkout Source
         uses: actions/checkout@v3
 
-      - name: Create .env file
-        run: |
-          mkdir -p ./app
-          echo "host=${{ secrets.DB_HOST }}" > ./app/.env
-          echo "port=${{ secrets.DB_PORT }}" >> ./app/.env
-          echo "user=${{ secrets.DB_USER }}" >> ./app/.env
-          echo "password=${{ secrets.DB_PASSWORD }}" >> ./app/.env
-          echo "database=${{ secrets.DB_NAME }}" >> ./app/.env
-
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -63,6 +54,11 @@ jobs:
               --restart unless-stopped \
               -p 80:80 \
               -p 3000:3000 \
+              -e host="${{ secrets.DB_HOST }}" \
+              -e port="${{ secrets.DB_PORT }}" \
+              -e user="${{ secrets.DB_USER }}" \
+              -e password="${{ secrets.DB_PASSWORD }}" \
+              -e database="${{ secrets.DB_NAME }}" \
               j22868706/taipeidaytrip_app:latest
 
             # Verify the container is running
