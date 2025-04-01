@@ -26,9 +26,6 @@ RUN pip install --upgrade pip && \
 # Copy application files
 COPY ./app /app/
 
-# Copy environment variables
-COPY ./app/.env /app/.env
-
 # Ensure directory structure exists
 RUN mkdir -p /app/templates /app/static/css /app/static/javaScript /app/static/images
 
