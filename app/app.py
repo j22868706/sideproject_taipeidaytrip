@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from flask import Flask, jsonify, request, render_template
 import os
 import pymysql
@@ -11,7 +10,7 @@ from datetime import datetime as dt_datetime
 import requests
 from dotenv import load_dotenv
 
-# 設置日誌
+# Set up logs
 gunicorn_logger = logging.getLogger('gunicorn.error')
 logging.basicConfig(level=logging.INFO, handlers=gunicorn_logger.handlers)
 logger = logging.getLogger(__name__)
@@ -23,24 +22,24 @@ app.debug = True
 
 load_dotenv()
 
-# 統一的資料庫連接函數
+# Unified database connection function
 def get_db_connection():
     try:
-        logger.info("嘗試連接到資料庫...")
+        logger.info("Attempting to connect to database...")
         con = pymysql.connect(
             host=os.getenv("host"),
             port=int(os.getenv("port")),
             user=os.getenv("user"),
             password=os.getenv("password"),
             database=os.getenv("database"),
-            connect_timeout=60,  # 連接超時 60 秒
-            read_timeout=60,     # 讀取超時 60 秒
-            write_timeout=60     # 寫入超時 60 秒
+            connect_timeout=60,  # Connection timeout 60 seconds
+            read_timeout=60,     # Read timeout 60 seconds
+            write_timeout=60     # Write timeout 60 seconds
         )
-        logger.info("資料庫連接成功")
+        logger.info("Database connection successful")
         return con
     except pymysql.MySQLError as e:
-        logger.error(f"資料庫連接失敗: {e}")
+        logger.error(f"Database connection failed: {e}")
         raise
 
 # Pages
@@ -116,11 +115,11 @@ def attractions():
         return jsonify(response_data)
 
     except pymysql.MySQLError as e:
-        logger.error(f"資料庫錯誤: {e}")
-        return jsonify({"error": True, "message": f"資料庫錯誤: {str(e)}"}), 500
+        logger.error(f"Database error: {e}")
+        return jsonify({"error": True, "message": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        logger.error(f"伺服器錯誤: {e}")
-        return jsonify({"error": True, "message": "伺服器內部錯誤"}), 500
+        logger.error(f"Server error: {e}")
+        return jsonify({"error": True, "message": "Internal server error"}), 500
 
 @app.route("/api/attraction/<int:attractionId>")
 def get_attraction(attractionId):
@@ -133,7 +132,7 @@ def get_attraction(attractionId):
         data = cursor.fetchall()
 
         if not data:
-            return jsonify({"error": True, "message": "景點編號不存在"}), 400
+            return jsonify({"error": True, "message": "Attraction ID does not exist"}), 400
 
         attraction = {
             "id": data[0][0],
@@ -157,11 +156,11 @@ def get_attraction(attractionId):
         return jsonify({"data": attraction})
 
     except pymysql.MySQLError as e:
-        logger.error(f"資料庫錯誤: {e}")
-        return jsonify({"error": True, "message": f"資料庫錯誤: {str(e)}"}), 500
+        logger.error(f"Database error: {e}")
+        return jsonify({"error": True, "message": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        logger.error(f"伺服器錯誤: {e}")
-        return jsonify({"error": True, "message": "伺服器內部錯誤"}), 500
+        logger.error(f"Server error: {e}")
+        return jsonify({"error": True, "message": "Internal server error"}), 500
 
 @app.route("/api/mrts")
 def mrts():
@@ -179,11 +178,11 @@ def mrts():
         return jsonify({"data": mrts_list})
 
     except pymysql.MySQLError as e:
-        logger.error(f"資料庫錯誤: {e}")
-        return jsonify({"error": True, "message": f"資料庫錯誤: {str(e)}"}), 500
+        logger.error(f"Database error: {e}")
+        return jsonify({"error": True, "message": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        logger.error(f"伺服器錯誤: {e}")
-        return jsonify({"error": True, "message": "伺服器內部錯誤"}), 500
+        logger.error(f"Server error: {e}")
+        return jsonify({"error": True, "message": "Internal server error"}), 500
 
 @app.route('/api/user', methods=["POST"])
 def signup():
@@ -198,20 +197,20 @@ def signup():
         cursor.execute("SELECT * FROM membership WHERE email = %s", (signupEmail,))
         if cursor.fetchone():
             con.close()
-            return jsonify({"error": True, "message": "這個電子郵箱已經被使用!"}), 400
+            return jsonify({"error": True, "message": "This email is already in use!"}), 400
 
         cursor.execute("INSERT INTO membership (name, email, password) VALUES (%s, %s, %s)",
                        (signupName, signupEmail, signupPassword))
         con.commit()
         con.close()
-        return jsonify({"ok": True, "message": "註冊成功"}), 200
+        return jsonify({"ok": True, "message": "Registration successful"}), 200
 
     except pymysql.MySQLError as e:
-        logger.error(f"資料庫錯誤: {e}")
-        return jsonify({"error": True, "message": f"資料庫錯誤: {str(e)}"}), 500
+        logger.error(f"Database error: {e}")
+        return jsonify({"error": True, "message": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        logger.error(f"伺服器錯誤: {e}")
-        return jsonify({"error": True, "message": "伺服器內部錯誤"}), 500
+        logger.error(f"Server error: {e}")
+        return jsonify({"error": True, "message": "Internal server error"}), 500
 
 @app.route('/api/user/auth', methods=["PUT"])
 def signin():
@@ -227,7 +226,7 @@ def signin():
 
         if not signinMembership:
             con.close()
-            return jsonify({"error": True, "message": "電子郵件或密碼錯誤"}), 400
+            return jsonify({"error": True, "message": "Email or password is incorrect"}), 400
 
         user_info = {
             "id": signinMembership[0][0],
@@ -242,11 +241,11 @@ def signin():
         return jsonify({"token": token})
 
     except pymysql.MySQLError as e:
-        logger.error(f"資料庫錯誤: {e}")
-        return jsonify({"error": True, "message": f"資料庫錯誤: {str(e)}"}), 500
+        logger.error(f"Database error: {e}")
+        return jsonify({"error": True, "message": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        logger.error(f"伺服器錯誤: {e}")
-        return jsonify({"error": True, "message": "伺服器內部錯誤"}), 500
+        logger.error(f"Server error: {e}")
+        return jsonify({"error": True, "message": "Internal server error"}), 500
 
 def authenticate_token(f):
     def decorated(*args, **kwargs):
@@ -267,10 +266,10 @@ def authenticate_token(f):
                 return jsonify({"data": None})
             return f(token_user_info, *args, **kwargs)
         except jwt.ExpiredSignatureError:
-            logger.error("JWT Token 已過期")
+            logger.error("JWT Token has expired")
             return jsonify({"data": None}), 400
         except jwt.InvalidTokenError as e:
-            logger.error(f"JWT Token 無效: {str(e)}")
+            logger.error(f"JWT Token is invalid: {str(e)}")
             return jsonify({"data": None}), 400
     return decorated
 
@@ -347,17 +346,17 @@ def get_trip():
         return jsonify({"data": booking_response_data})
 
     except jwt.ExpiredSignatureError:
-        logger.error("Token 已過期")
+        logger.error("Token has expired")
         return jsonify({"error": "Token expired"}), 400
     except jwt.DecodeError:
-        logger.error("Token 解碼失敗")
+        logger.error("Token decoding failed")
         return jsonify({"error": "Token decoding failed"}), 400
     except pymysql.MySQLError as e:
-        logger.error(f"資料庫錯誤: {e}")
-        return jsonify({"error": True, "message": f"資料庫錯誤: {str(e)}"}), 500
+        logger.error(f"Database error: {e}")
+        return jsonify({"error": True, "message": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        logger.error(f"伺服器錯誤: {e}")
-        return jsonify({"error": True, "message": "伺服器內部錯誤"}), 500
+        logger.error(f"Server error: {e}")
+        return jsonify({"error": True, "message": "Internal server error"}), 500
 
 @app.route("/api/booking", methods=["POST"])
 def update_trip():
@@ -369,12 +368,12 @@ def update_trip():
 
         if not token:
             con.close()
-            return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
+            return jsonify({"error": True, "message": "Not logged in, access denied"}), 403
 
         token_parts = token.split()
         if len(token_parts) != 2 or token_parts[0].lower() != "bearer":
             con.close()
-            return jsonify({"error": True, "message": "無效的 Token"}), 403
+            return jsonify({"error": True, "message": "Invalid Token"}), 403
 
         jwt_token = token_parts[1]
         decoded = jwt.decode(jwt_token, secret_key, algorithms=["HS256"])
@@ -404,17 +403,17 @@ def update_trip():
         return jsonify({"ok": True})
 
     except jwt.ExpiredSignatureError:
-        logger.error("Token 已過期")
-        return jsonify({"error": True, "message": "Token已過期"}), 400
+        logger.error("Token has expired")
+        return jsonify({"error": True, "message": "Token has expired"}), 400
     except jwt.InvalidTokenError as e:
-        logger.error(f"Token 無效: {str(e)}")
-        return jsonify({"error": True, "message": f"Token無效: {str(e)}"}), 400
+        logger.error(f"Token is invalid: {str(e)}")
+        return jsonify({"error": True, "message": f"Token is invalid: {str(e)}"}), 400
     except pymysql.MySQLError as e:
-        logger.error(f"資料庫錯誤: {e}")
-        return jsonify({"error": True, "message": f"資料庫錯誤: {str(e)}"}), 500
+        logger.error(f"Database error: {e}")
+        return jsonify({"error": True, "message": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        logger.error(f"伺服器錯誤: {e}")
-        return jsonify({"error": True, "message": "伺服器內部錯誤"}), 500
+        logger.error(f"Server error: {e}")
+        return jsonify({"error": True, "message": "Internal server error"}), 500
 
 @app.route("/api/booking", methods=["DELETE"])
 def delete_trip():
@@ -426,12 +425,12 @@ def delete_trip():
 
         if not token:
             con.close()
-            return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
+            return jsonify({"error": True, "message": "Not logged in, access denied"}), 403
 
         token_parts = token.split()
         if len(token_parts) != 2 or token_parts[0].lower() != "bearer":
             con.close()
-            return jsonify({"error": True, "message": "無效的 Token"}), 403
+            return jsonify({"error": True, "message": "Invalid Token"}), 403
 
         jwt_token = token_parts[1]
         decoded = jwt.decode(jwt_token, secret_key, algorithms=["HS256"])
@@ -449,17 +448,17 @@ def delete_trip():
         return jsonify({"ok": True})
 
     except jwt.ExpiredSignatureError:
-        logger.error("Token 已過期")
+        logger.error("Token has expired")
         return jsonify({"error": True, "message": "Token expired"}), 400
     except jwt.DecodeError:
-        logger.error("Token 解碼失敗")
+        logger.error("Token decoding failed")
         return jsonify({"error": True, "message": "Token decoding failed"}), 400
     except pymysql.MySQLError as e:
-        logger.error(f"資料庫錯誤: {e}")
-        return jsonify({"error": True, "message": f"資料庫錯誤: {str(e)}"}), 500
+        logger.error(f"Database error: {e}")
+        return jsonify({"error": True, "message": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        logger.error(f"伺服器錯誤: {e}")
-        return jsonify({"error": True, "message": "伺服器內部錯誤"}), 500
+        logger.error(f"Server error: {e}")
+        return jsonify({"error": True, "message": "Internal server error"}), 500
 
 @app.route("/api/order", methods=["POST"])
 def order_trip():
@@ -471,12 +470,12 @@ def order_trip():
 
         if not token:
             con.close()
-            return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
+            return jsonify({"error": True, "message": "Not logged in, access denied"}), 403
 
         token_parts = token.split()
         if len(token_parts) != 2 or token_parts[0].lower() != "bearer":
             con.close()
-            return jsonify({"error": True, "message": "無效的 Token"}), 403
+            return jsonify({"error": True, "message": "Invalid Token"}), 403
 
         jwt_token = token_parts[1]
         decoded = jwt.decode(jwt_token, secret_key, algorithms=["HS256"])
@@ -498,7 +497,7 @@ def order_trip():
                        (contact_name, trip_date, trip_time, trip_attraction_id))
         if cursor.fetchone():
             con.close()
-            return jsonify({"error": True, "message": "訂單建立失敗，已存在相同訂單"}), 400
+            return jsonify({"error": True, "message": "Order creation failed, identical order already exists"}), 400
 
         cursor.execute('INSERT INTO ordersystem (orderNum, memberId, attractionId, date, time, price, email, name, phone, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
                        (order_num, user_id, trip_attraction_id, trip_date, trip_time, price, contact_email, contact_name, contact_phone, 'Pending'))
@@ -530,7 +529,7 @@ def order_trip():
             return jsonify({
                 "data": {
                     "number": order_num,
-                    "payment": {"status": status_code, "message": "付款成功"},
+                    "payment": {"status": status_code, "message": "Payment successful"},
                 }
             }), 200
         else:
@@ -538,17 +537,17 @@ def order_trip():
             return jsonify({"error": True, "message": req.json().get("msg")}), 400
 
     except jwt.ExpiredSignatureError:
-        logger.error("Token 已過期")
+        logger.error("Token has expired")
         return jsonify({"error": True, "message": "Token expired"}), 400
     except jwt.DecodeError:
-        logger.error("Token 解碼失敗")
+        logger.error("Token decoding failed")
         return jsonify({"error": True, "message": "Token decoding failed"}), 400
     except pymysql.MySQLError as e:
-        logger.error(f"資料庫錯誤: {e}")
-        return jsonify({"error": True, "message": f"資料庫錯誤: {str(e)}"}), 500
+        logger.error(f"Database error: {e}")
+        return jsonify({"error": True, "message": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        logger.error(f"伺服器錯誤: {e}")
-        return jsonify({"error": True, "message": "伺服器內部錯誤"}), 500
+        logger.error(f"Server error: {e}")
+        return jsonify({"error": True, "message": "Internal server error"}), 500
 
 @app.route("/api/order/<int:orderNumber>", methods=["GET"])
 def show_trip(orderNumber):
@@ -560,12 +559,12 @@ def show_trip(orderNumber):
 
         if not token:
             con.close()
-            return jsonify({"error": True, "message": "未提供有效的 Token"}), 403
+            return jsonify({"error": True, "message": "No valid token provided"}), 403
 
         token_parts = token.split()
         if len(token_parts) != 2 or token_parts[0].lower() != "bearer":
             con.close()
-            return jsonify({"error": True, "message": "無效的 Token"}), 403
+            return jsonify({"error": True, "message": "Invalid Token"}), 403
 
         jwt_token = token_parts[1]
         decoded = jwt.decode(jwt_token, secret_key, algorithms=["HS256"])
@@ -576,7 +575,7 @@ def show_trip(orderNumber):
 
         if not order_data:
             con.close()
-            return jsonify({"error": True, "message": "訂單不存在"}), 404
+            return jsonify({"error": True, "message": "Order does not exist"}), 404
 
         attraction_id = order_data[3]
         query_attraction = "SELECT name, address, rownumber FROM attractions WHERE id = %s"
@@ -585,7 +584,7 @@ def show_trip(orderNumber):
 
         if not attraction_data:
             con.close()
-            return jsonify({"error": True, "message": "景點資料不存在"}), 500
+            return jsonify({"error": True, "message": "Attraction data does not exist"}), 500
 
         attraction_rownumber = attraction_data[2]
         img_query = "SELECT imageUrl FROM attractionImages WHERE attractionRownumber = %s"
@@ -618,17 +617,17 @@ def show_trip(orderNumber):
         return jsonify({"data": order_info})
 
     except jwt.ExpiredSignatureError:
-        logger.error("Token 已過期")
-        return jsonify({"error": True, "message": "Token已過期"}), 400
+        logger.error("Token has expired")
+        return jsonify({"error": True, "message": "Token has expired"}), 400
     except jwt.InvalidTokenError:
-        logger.error("Token 無效")
-        return jsonify({"error": True, "message": "無效的Token"}), 400
+        logger.error("Token is invalid")
+        return jsonify({"error": True, "message": "Invalid Token"}), 400
     except pymysql.MySQLError as e:
-        logger.error(f"資料庫錯誤: {e}")
-        return jsonify({"error": True, "message": f"資料庫錯誤: {str(e)}"}), 500
+        logger.error(f"Database error: {e}")
+        return jsonify({"error": True, "message": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        logger.error(f"伺服器錯誤: {e}")
-        return jsonify({"error": True, "message": "伺服器內部錯誤"}), 500
+        logger.error(f"Server error: {e}")
+        return jsonify({"error": True, "message": "Internal server error"}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000)
